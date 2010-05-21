@@ -31,19 +31,21 @@
     Private controlLocation(5) As Boolean
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        ' Bedienfenster unten rechts auf dem Bildschirm positionieren
         Dim ra As Rectangle = My.Computer.Screen.WorkingArea
         Me.Left = ra.Width - Me.Width
         Me.Top = ra.Height - Me.Height
-    End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        initPlayer()
+        Try
+            initPlayer()
+        Catch ex As Exception
+            MsgBox("Der Player konnte nicht initialisiert werden. Sie koennen die Bedienoberflaeche ansehen, aber eine Darstellung von Videos / Texten ist nicht moeglich.")
+        End Try
+
     End Sub
 
     Private Sub initPlayer()
         Try
-            ' Start-Button deaktivieren
-            Button1.Enabled = False
             ' Ausgabefeld oeffnen / Player initialisieren
             pl = New Liconcomp.Player()
 

@@ -23,7 +23,6 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Me.Button1 = New System.Windows.Forms.Button
         Me.RadioButtonLAnlinks = New System.Windows.Forms.RadioButton
         Me.RadioButtonLAnrechts = New System.Windows.Forms.RadioButton
         Me.RadioButtonLArechts = New System.Windows.Forms.RadioButton
@@ -49,6 +48,7 @@ Partial Class Form1
         Me.BLLpause = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.Button6 = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.ListBox2 = New System.Windows.Forms.ListBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -67,7 +67,6 @@ Partial Class Form1
         Me.CheckBoxB1 = New System.Windows.Forms.CheckBox
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Button6 = New System.Windows.Forms.Button
         CType(Me.NumericUpDownLAvideoheight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAvideowidth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAoverlap, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -82,15 +81,6 @@ Partial Class Form1
         Me.GroupBox5.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(13, 340)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(119, 23)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Einschalten"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'RadioButtonLAnlinks
         '
@@ -328,7 +318,6 @@ Partial Class Form1
         Me.GroupBox4.Controls.Add(Me.Button4)
         Me.GroupBox4.Controls.Add(Me.Button8)
         Me.GroupBox4.Controls.Add(Me.GroupBox2)
-        Me.GroupBox4.Controls.Add(Me.Button1)
         Me.GroupBox4.Controls.Add(Me.Button3)
         Me.GroupBox4.Controls.Add(Me.GroupBox3)
         Me.GroupBox4.Controls.Add(Me.Button2)
@@ -344,6 +333,15 @@ Partial Class Form1
         Me.GroupBox4.Size = New System.Drawing.Size(928, 383)
         Me.GroupBox4.TabIndex = 6
         Me.GroupBox4.TabStop = False
+        '
+        'Button6
+        '
+        Me.Button6.Location = New System.Drawing.Point(358, 340)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(169, 23)
+        Me.Button6.TabIndex = 13
+        Me.Button6.Text = "Playlists laden"
+        Me.Button6.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -540,15 +538,6 @@ Partial Class Form1
         '
         Me.Timer1.Interval = 2000
         '
-        'Button6
-        '
-        Me.Button6.Location = New System.Drawing.Point(358, 340)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(169, 23)
-        Me.Button6.TabIndex = 13
-        Me.Button6.Text = "Playlists laden"
-        Me.Button6.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -576,7 +565,6 @@ Partial Class Form1
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents Button8 As System.Windows.Forms.Button
     Friend WithEvents BLLplay As System.Windows.Forms.Button
     Friend WithEvents BLLpause As System.Windows.Forms.Button
