@@ -70,6 +70,7 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.NumericUpDownLAvideoheight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAvideowidth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAoverlap, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -185,6 +186,7 @@ Partial Class Form1
         Me.NumericUpDownLAvideoheight.Name = "NumericUpDownLAvideoheight"
         Me.NumericUpDownLAvideoheight.Size = New System.Drawing.Size(82, 20)
         Me.NumericUpDownLAvideoheight.TabIndex = 24
+        Me.NumericUpDownLAvideoheight.ThousandsSeparator = True
         Me.NumericUpDownLAvideoheight.Value = New Decimal(New Integer() {72, 0, 0, 0})
         '
         'Label5
@@ -624,5 +626,6 @@ Partial Class Form1
     Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
 
 End Class

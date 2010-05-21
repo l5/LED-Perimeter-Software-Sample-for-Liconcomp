@@ -305,6 +305,126 @@ Namespace My
                 Me("Bande5Height") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande1Linebreak() As Long
+            Get
+                Return CType(Me("Bande1Linebreak"),Long)
+            End Get
+            Set
+                Me("Bande1Linebreak") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande1Overlap() As Long
+            Get
+                Return CType(Me("Bande1Overlap"),Long)
+            End Get
+            Set
+                Me("Bande1Overlap") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande2Linebreak() As Long
+            Get
+                Return CType(Me("Bande2Linebreak"),Long)
+            End Get
+            Set
+                Me("Bande2Linebreak") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande2Overlap() As Long
+            Get
+                Return CType(Me("Bande2Overlap"),Long)
+            End Get
+            Set
+                Me("Bande2Overlap") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande3Linebreak() As Long
+            Get
+                Return CType(Me("Bande3Linebreak"),Long)
+            End Get
+            Set
+                Me("Bande3Linebreak") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande3Overlap() As Long
+            Get
+                Return CType(Me("Bande3Overlap"),Long)
+            End Get
+            Set
+                Me("Bande3Overlap") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande4Linebreak() As Long
+            Get
+                Return CType(Me("Bande4Linebreak"),Long)
+            End Get
+            Set
+                Me("Bande4Linebreak") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande4Overlap() As Long
+            Get
+                Return CType(Me("Bande4Overlap"),Long)
+            End Get
+            Set
+                Me("Bande4Overlap") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande5Linebreak() As Long
+            Get
+                Return CType(Me("Bande5Linebreak"),Long)
+            End Get
+            Set
+                Me("Bande5Linebreak") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande5Overlap() As Long
+            Get
+                Return CType(Me("Bande5Overlap"),Long)
+            End Get
+            Set
+                Me("Bande5Overlap") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

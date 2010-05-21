@@ -14,8 +14,14 @@
     Private myPlaylistContents(100, 100) As String
 
     Private loc(5) As Liconcomp.VectorMovement
+    ' Breite der Darstellungsflaechen (Pixel)
     Private vidWidth(5) As Long
+    ' Hoehe der Darstellungsflaechen (Pixel)
     Private vidHeight(5) As Long
+    ' Linebreak der Darstellungsflaechen (Pixel)
+    Private vidLinebreak(5) As Long
+    ' Overlap der Darstellungsflaechen (Pixel)
+    Private vidOverlap(5) As Long
 
     Private vpactive(5) As Integer
     Private vplActive(5) As Integer
@@ -37,6 +43,11 @@
     ' Gibt das Verzeichnis an, in dem die zu ladenden Video- 
     ' und Playlist-Dateien abgelegt sind.
     Private videoPfad
+
+    ' Wird auf TRUE gesetzt, wenn Werte in Checkboxen durch 
+    ' das Programm geaendert werden und deshalb keine 
+    ' automatischen Aktionen ausgeloest werden sollen.
+    Private autoChange As Boolean = False
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Bedienfenster unten rechts auf dem Bildschirm positionieren
@@ -68,6 +79,22 @@
         Try
             ' Ausgabefeld oeffnen / Player initialisieren
             pl = New Liconcomp.Player()
+
+            ' Einstellungen der Darstellungsflaechen
+            ' uebernehmen
+            For i = 1 To anzahlBanden
+                vidHeight(i) = My.Settings("Bande" + i.ToString + "Height")
+                vidWidth(i) = My.Settings("Bande" + i.ToString + "Width")
+                vidLinebreak(i) = My.Settings("Bande" + i.ToString + "Linebreak")
+                vidOverlap(i) = My.Settings("Bande" + i.ToString + "Overlap")
+
+                ' Positionieren der Anzeigeflaechen
+                loc(i) = New Liconcomp.VectorMovement
+                loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
+                loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
+
+
+            Next
 
             initTexts()
         Catch ex As Exception
@@ -178,21 +205,12 @@
                     ReDim Preserve myVideo(anzahlBanden, anzahlVideos)
 
 
-                    For i = 1 To anzahlBanden
-                        vidHeight(i) = My.Settings("Bande" + i.ToString + "Height")
-                        vidWidth(i) = My.Settings("Bande" + i.ToString + "Width")
-                    Next
-
                     ' Nachdem feststeht, um welche Videos es geht,
                     ' werden diese auf jede Bandenflaeche einzeln 
                     ' geladen. 
                     Dim progress As Integer = 0
                     Dim zaehler As Integer = 0
                     For i = 1 To anzahlBanden
-                        ' Positionieren der Anzeigeflaechen
-                        loc(i) = New Liconcomp.VectorMovement
-                        loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
-                        loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
 
                         For j = 1 To anzahlVideos
                             zaehler += 1
@@ -206,6 +224,8 @@
                             myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
                             myVideo(i, j).Movement = loc(i)
                             myVideo(i, j).zIndex = 110 + j
+                            myVideo(i, j).LineBreak = vidLinebreak(i)
+                            myVideo(i, j).EndOfLineOverlap = vidOverlap(i)
                             myVideo(i, j).Visible = False
                         Next j
                     Next i
@@ -275,7 +295,7 @@
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidWidth(i) = newWidth
-                My.Settings("Video" + i.ToString + "Width") = newWidth
+                My.Settings("Bande" + i.ToString + "Width") = newWidth
             End If
         Next i
     End Sub
@@ -285,7 +305,7 @@
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidHeight(i) = newHeight
-                My.Settings("Video" + i.ToString + "Height") = newHeight
+                My.Settings("Bande" + i.ToString + "Height") = newHeight
             End If
         Next i
     End Sub
@@ -352,6 +372,8 @@
                 If controlLocation(i) = True Then
                     For j = 1 To anzahlVideos
                         myVideo(i, j).LineBreak = newpos
+                        vidLinebreak(i) = newpos
+                        My.Settings("Bande" + i.ToString + "Linebreak") = newpos
                     Next j
                 End If
             Next i
@@ -367,6 +389,8 @@
                 If controlLocation(i) = True Then
                     For j = 1 To anzahlVideos
                         myVideo(i, j).EndOfLineOverlap = newpos
+                        vidOverlap(i) = newpos
+                        My.Settings("Bande" + i.ToString + "Overlap") = newpos
                     Next j
                 End If
             Next i
@@ -376,19 +400,27 @@
     End Sub
 
     Private Sub NumericUpDownLAXPos_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAXPos.ValueChanged
-        changeVideoXPos(NumericUpDownLAXPos.Value)
+        If autoChange = False Then
+            changeVideoXPos(NumericUpDownLAXPos.Value)
+        End If
     End Sub
 
     Private Sub NumericUpDownLAYpos_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAYpos.ValueChanged
-        changeVideoYPos(NumericUpDownLAYpos.Value)
+        If autoChange = False Then
+            changeVideoYPos(NumericUpDownLAYpos.Value)
+        End If
     End Sub
 
     Private Sub NumericUpDownLAbreak_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAbreak.ValueChanged
-        changeVideoLinebreak(NumericUpDownLAbreak.Value)
+        If autoChange = False Then
+            changeVideoLinebreak(NumericUpDownLAbreak.Value)
+        End If
     End Sub
 
     Private Sub NumericUpDownLAoverlap_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAoverlap.ValueChanged
-        changeVideoOverlap(NumericUpDownLAoverlap.Value)
+        If autoChange = False Then
+            changeVideoOverlap(NumericUpDownLAoverlap.Value)
+        End If
     End Sub
 
     Private Sub hideText(ByVal location As Integer)
@@ -465,6 +497,87 @@
 
     Private Sub setControlLocation(ByVal location As Integer, ByVal onoff As Boolean)
         controlLocation(location) = onoff
+        refreshSettingSet()
+    End Sub
+
+    Private Sub refreshSettingSet()
+        ' Setzt die Einstellungen je nach ausgewaehlten Bandensets
+
+        autoChange = True
+
+
+        Dim myHoehe As Long
+        Dim myBreite As Long
+        Dim myXPos As Long
+        Dim myYPos As Long
+        Dim myOverl As Long
+        Dim myLineb As Long
+
+        Dim gesteuerteBanden As Integer = 0
+
+        Dim ersterDurchlauf As Boolean = True
+        For i = 1 To anzahlBanden
+            If controlLocation(i) = True Then
+                gesteuerteBanden += 1
+                If ersterDurchlauf = True Then
+                    ersterDurchlauf = False
+
+                    myHoehe = vidHeight(i)
+                    myBreite = vidWidth(i)
+                    myXPos = loc(i).GetX
+                    myYPos = loc(i).GetY
+                    myLineb = vidLinebreak(i)
+                    myOverl = vidOverlap(i)
+
+                    NumericUpDownLAvideoheight.Value = vidHeight(i)
+                    NumericUpDownLAvideowidth.Value = vidWidth(i)
+                    NumericUpDownLAXPos.Value = loc(i).GetX
+                    NumericUpDownLAYpos.Value = loc(i).GetY
+                    NumericUpDownLAbreak.Value = vidLinebreak(i)
+                    NumericUpDownLAoverlap.Value = vidOverlap(i)
+
+                    NumericUpDownLAvideoheight.ForeColor = Color.Black
+                    NumericUpDownLAvideowidth.ForeColor = Color.Black
+                    NumericUpDownLAXPos.ForeColor = Color.Black
+                    NumericUpDownLAYpos.ForeColor = Color.Black
+                    NumericUpDownLAbreak.ForeColor = Color.Black
+                    NumericUpDownLAoverlap.ForeColor = Color.Black
+                End If
+                If vidHeight(i) <> myHoehe Then
+                    NumericUpDownLAvideoheight.ForeColor = Color.Red
+                End If
+                If vidWidth(i) <> myBreite Then
+                    NumericUpDownLAvideowidth.ForeColor = Color.Red
+                End If
+                If loc(i).GetX <> myXPos Then
+                    NumericUpDownLAXPos.ForeColor = Color.Red
+                End If
+                If loc(i).GetY <> myYPos Then
+                    NumericUpDownLAYpos.ForeColor = Color.Red
+                End If
+                If vidLinebreak(i) <> myLineb Then
+                    NumericUpDownLAbreak.ForeColor = Color.Red
+                End If
+                If vidOverlap(i) <> myOverl Then
+                    NumericUpDownLAoverlap.ForeColor = Color.Red
+                End If
+            End If
+        Next i
+        If gesteuerteBanden = 0 Then
+            NumericUpDownLAvideoheight.Value = 0
+            NumericUpDownLAvideowidth.Value = 0
+            NumericUpDownLAXPos.Value = 0
+            NumericUpDownLAYpos.Value = 0
+            NumericUpDownLAbreak.Value = 0
+            NumericUpDownLAoverlap.Value = 0
+            NumericUpDownLAvideoheight.ForeColor = Color.Gray
+            NumericUpDownLAvideowidth.ForeColor = Color.Gray
+            NumericUpDownLAXPos.ForeColor = Color.Gray
+            NumericUpDownLAYpos.ForeColor = Color.Gray
+            NumericUpDownLAbreak.ForeColor = Color.Gray
+            NumericUpDownLAoverlap.ForeColor = Color.Gray
+        End If
+        autoChange = False
     End Sub
 
     Private Sub CheckBoxB1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxB1.CheckedChanged
@@ -504,11 +617,15 @@
     End Sub
 
     Private Sub NumericUpDownLAvideowidth_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAvideowidth.ValueChanged
-        changeVideoWidth(NumericUpDownLAvideowidth.Value)
+        If autoChange = False Then
+            changeVideoWidth(NumericUpDownLAvideowidth.Value)
+        End If
     End Sub
 
     Private Sub NumericUpDownLAvideoheight_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAvideoheight.ValueChanged
-        changeVideoHeight(NumericUpDownLAvideoheight.Value)
+        If autoChange = False Then
+            changeVideoHeight(NumericUpDownLAvideoheight.Value)
+        End If
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
