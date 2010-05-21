@@ -48,6 +48,7 @@ Partial Class Form1
         Me.BLLpause = New System.Windows.Forms.Button
         Me.Button8 = New System.Windows.Forms.Button
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.Button6 = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.ListBox2 = New System.Windows.Forms.ListBox
@@ -68,7 +69,6 @@ Partial Class Form1
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker
         CType(Me.NumericUpDownLAvideoheight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAvideowidth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -338,6 +338,14 @@ Partial Class Form1
         Me.GroupBox4.TabIndex = 6
         Me.GroupBox4.TabStop = False
         '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(138, 340)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(214, 23)
+        Me.ProgressBar1.TabIndex = 14
+        Me.ProgressBar1.Visible = False
+        '
         'Button6
         '
         Me.Button6.Location = New System.Drawing.Point(358, 340)
@@ -541,13 +549,6 @@ Partial Class Form1
         'Timer1
         '
         Me.Timer1.Interval = 2000
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(13, 340)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(100, 23)
-        Me.ProgressBar1.TabIndex = 14
         '
         'Form1
         '

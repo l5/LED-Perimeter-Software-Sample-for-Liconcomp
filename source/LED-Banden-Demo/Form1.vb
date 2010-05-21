@@ -136,14 +136,25 @@
     End Sub
 
     Private Sub loadVideos()
+        ' Die Videos aus dem Videoverzeichnis werden 
+        ' vollständig vorgeladen.
+        ' Vorteil: Alle Videos liegen fuer den Sofortstart bereit.
+        ' Nachteil: Das Laden dauert recht lange.
         If videosGeladen = False Then
+            ' Mauscursor in den Wartezustand versetzen
             Me.Cursor = Cursors.WaitCursor
+
+            ' Fortschrittsanzeige anstelle des Startbuttons anzeigen
+            Button8.Visible = False
+            ProgressBar1.Visible = True
+
+            ' Der Video-Ordner darf vom User ausgewaehlt werden.
             FolderBrowserDialog1.SelectedPath = videoPfad
             FolderBrowserDialog1.ShowDialog()
             videoPfad = FolderBrowserDialog1.SelectedPath
 
-            videosGeladen = True
             Try
+
                 Dim oDir As New System.IO.DirectoryInfo(videoPfad)
                 Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
 
@@ -155,7 +166,6 @@
 
                 For Each oFile In oFiles
                     If (i < 100) Then
-                        'MsgBox(oFile.Name.Substring(oFile.Name.Length - 3).ToLower)
                         If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
                             i += 1
                             ListBox1.Items.Add(oFile.Name)
@@ -171,29 +181,46 @@
                     vidHeight(i) = 72
                 Next
 
+                ' Nachdem feststeht, um welche Videos es geht,
+                ' werden diese auf jede Bandenflaeche einzeln 
+                ' geladen. 
                 Dim progress As Integer = 0
                 Dim zaehler As Integer = 0
                 For i = 1 To anzahlBanden
+                    ' Positionieren der Anzeigeflaechen
                     loc(i) = New Liconcomp.VectorMovement
                     loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
                     loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
 
                     For j = 1 To anzahlVideos
-                        ' myVideo(i, j) = New Liconcomp.VideoFile
                         zaehler += 1
+
+                        ' Das Laden dauert je nach Anzahl der Videos ziemlich lange.
+                        ' Deshalb Ladefortschritt anzeigen.
                         ProgressBar1.Value = zaehler / (anzahlVideos * anzahlBanden) * 100
                         Me.Update()
+
+                        ' Videoobjekt erstellen
                         myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
                         myVideo(i, j).Movement = loc(i)
                         myVideo(i, j).zIndex = 110 + j
                         myVideo(i, j).Visible = False
                     Next j
                 Next i
+
+                ' Timer aktivieren, der fuer die Wiederholung von Texten
+                ' zustaendig ist
                 Timer1.Enabled = True
+
+                ' Verhindern, dass die Videos noch einmal
+                ' geladen werden
+                videosGeladen = True
 
             Catch ex As Exception
                 MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
             End Try
+
+            ' Mauscursor wieder in den Normalzustand versetzen.
             Me.Cursor = Cursors.Default
         End If
     End Sub
@@ -230,6 +257,7 @@
     End Sub
 
     Private Sub videoPlay()
+        ' Startet die Videos auf allen selektierten Darstellungsflaechen
         Dim sync As Liconcomp.Sync = New Liconcomp.Sync
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
@@ -241,6 +269,7 @@
     End Sub
 
     Private Sub changeVideoWidth(ByVal newWidth As Long)
+        ' Aendert die Breite aller selektierten Darstellungsflaechen
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidWidth(i) = newWidth
@@ -249,6 +278,7 @@
     End Sub
 
     Private Sub changeVideoHeight(ByVal newHeight As Long)
+        ' Aendert die Hoehe aller selektierten Darstellungsflaechen
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidHeight(i) = newHeight
@@ -257,6 +287,7 @@
     End Sub
 
     Private Sub videoHide()
+        ' Versteckt das Video auf allen selektierten Darstellungsflaechen
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 myVideo(i, vpactive(i)).Visible = False
@@ -266,6 +297,7 @@
     End Sub
 
     Private Sub videoStop()
+        ' Haelt das Video auf allen selektierten Darstellungsflaechen an
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 myVideo(i, vpactive(i)).Stop()
@@ -274,6 +306,7 @@
     End Sub
 
     Private Sub videoPause()
+        ' Pausiert das Video auf allen selektierten Darstellungsflaechen
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 myVideo(i, vpactive(i)).Pause()
@@ -282,6 +315,7 @@
     End Sub
 
     Private Sub changeVideoXPos(ByVal newpos As Long)
+        ' Aendert die X-Position aller selektierten Darstellungsflaechen
         Try
             For i = 1 To anzahlBanden
                 If controlLocation(i) = True Then
@@ -295,6 +329,7 @@
     End Sub
 
     Private Sub changeVideoYPos(ByVal newpos As Long)
+        ' Aendert die Y-Position aller selektierten Darstellungsflaechen
         Try
             For i = 1 To anzahlBanden
                 If controlLocation(i) = True Then
@@ -322,6 +357,7 @@
     End Sub
 
     Private Sub changeVideoOverlap(ByVal newpos As Long)
+        ' Aendert fuer alle Banden den Video-Overlap
         Try
             For i = 1 To anzahlBanden
                 If controlLocation(i) = True Then
