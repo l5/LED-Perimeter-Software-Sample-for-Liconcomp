@@ -185,6 +185,126 @@ Namespace My
                 Me("videoPfad") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("768")>  _
+        Public Property Bande1Width() As Long
+            Get
+                Return CType(Me("Bande1Width"),Long)
+            End Get
+            Set
+                Me("Bande1Width") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("72")>  _
+        Public Property Bande1Height() As Long
+            Get
+                Return CType(Me("Bande1Height"),Long)
+            End Get
+            Set
+                Me("Bande1Height") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("768")>  _
+        Public Property Bande2Width() As Long
+            Get
+                Return CType(Me("Bande2Width"),Long)
+            End Get
+            Set
+                Me("Bande2Width") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("72")>  _
+        Public Property Bande2Height() As Long
+            Get
+                Return CType(Me("Bande2Height"),Long)
+            End Get
+            Set
+                Me("Bande2Height") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("768")>  _
+        Public Property Bande3Width() As Long
+            Get
+                Return CType(Me("Bande3Width"),Long)
+            End Get
+            Set
+                Me("Bande3Width") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("72")>  _
+        Public Property Bande3Height() As Long
+            Get
+                Return CType(Me("Bande3Height"),Long)
+            End Get
+            Set
+                Me("Bande3Height") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("768")>  _
+        Public Property Bande4Width() As Long
+            Get
+                Return CType(Me("Bande4Width"),Long)
+            End Get
+            Set
+                Me("Bande4Width") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("72")>  _
+        Public Property Bande4Height() As Long
+            Get
+                Return CType(Me("Bande4Height"),Long)
+            End Get
+            Set
+                Me("Bande4Height") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("768")>  _
+        Public Property Bande5Width() As Long
+            Get
+                Return CType(Me("Bande5Width"),Long)
+            End Get
+            Set
+                Me("Bande5Width") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("72")>  _
+        Public Property Bande5Height() As Long
+            Get
+                Return CType(Me("Bande5Height"),Long)
+            End Get
+            Set
+                Me("Bande5Height") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -68,11 +68,6 @@
         Try
             ' Ausgabefeld oeffnen / Player initialisieren
             pl = New Liconcomp.Player()
-            vidWidth(1) = 768
-            vidWidth(2) = 768
-            vidWidth(3) = 768
-            vidWidth(4) = 768
-            vidWidth(5) = 768
 
             initTexts()
         Catch ex As Exception
@@ -184,7 +179,8 @@
 
 
                     For i = 1 To anzahlBanden
-                        vidHeight(i) = 72
+                        vidHeight(i) = My.Settings("Bande" + i.ToString + "Height")
+                        vidWidth(i) = My.Settings("Bande" + i.ToString + "Width")
                     Next
 
                     ' Nachdem feststeht, um welche Videos es geht,
@@ -279,6 +275,7 @@
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidWidth(i) = newWidth
+                My.Settings("Video" + i.ToString + "Width") = newWidth
             End If
         Next i
     End Sub
@@ -288,6 +285,7 @@
         For i = 1 To anzahlBanden
             If controlLocation(i) = True Then
                 vidHeight(i) = newHeight
+                My.Settings("Video" + i.ToString + "Height") = newHeight
             End If
         Next i
     End Sub
