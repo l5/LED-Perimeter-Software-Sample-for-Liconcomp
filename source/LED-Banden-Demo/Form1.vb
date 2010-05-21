@@ -30,6 +30,8 @@
 
     Private controlLocation(5) As Boolean
 
+    Private videosGeladen As Boolean = False
+
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Bedienfenster unten rechts auf dem Bildschirm positionieren
         Dim ra As Rectangle = My.Computer.Screen.WorkingArea
@@ -126,60 +128,63 @@
     End Sub
 
     Private Sub loadVideos()
-        Try
-            Dim myDir As String = Environment.CurrentDirectory
+        If videosGeladen = False Then
+            videosGeladen = True
+            Try
+                Dim myDir As String = Environment.CurrentDirectory
 
-            ' Verzeichnis "movies" auslesen
-            If myDir.EndsWith("\") And myDir.Length > 3 Then
-                myDir += "movie"
-            Else
-                myDir += "\movie"
-            End If
-            Dim oDir As New System.IO.DirectoryInfo(myDir)
-            Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
-
-            ' Datei-Array durchlaufen und in 
-            ' ListBox übertragen
-            Dim oFile As System.IO.FileInfo
-            ListBox1.Items.Clear()
-            Dim i As Integer = 0
-
-            For Each oFile In oFiles
-                If (i < 100) Then
-                    'MsgBox(oFile.Name.Substring(oFile.Name.Length - 3).ToLower)
-                    If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
-                        i += 1
-                        ListBox1.Items.Add(oFile.Name)
-                        myVideoFilenames(i) = New String(myDir + "\" + oFile.Name)
-                    End If
+                ' Verzeichnis "movies" auslesen
+                If myDir.EndsWith("\") And myDir.Length > 3 Then
+                    myDir += "movie"
+                Else
+                    myDir += "\movie"
                 End If
-            Next
-            anzahlVideos = i
-            ReDim Preserve myVideo(anzahlBanden, anzahlVideos)
+                Dim oDir As New System.IO.DirectoryInfo(myDir)
+                Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
+
+                ' Datei-Array durchlaufen und in 
+                ' ListBox übertragen
+                Dim oFile As System.IO.FileInfo
+                ListBox1.Items.Clear()
+                Dim i As Integer = 0
+
+                For Each oFile In oFiles
+                    If (i < 100) Then
+                        'MsgBox(oFile.Name.Substring(oFile.Name.Length - 3).ToLower)
+                        If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
+                            i += 1
+                            ListBox1.Items.Add(oFile.Name)
+                            myVideoFilenames(i) = New String(myDir + "\" + oFile.Name)
+                        End If
+                    End If
+                Next
+                anzahlVideos = i
+                ReDim Preserve myVideo(anzahlBanden, anzahlVideos)
 
 
-            For i = 1 To anzahlBanden
-                vidHeight(i) = 72
-            Next
+                For i = 1 To anzahlBanden
+                    vidHeight(i) = 72
+                Next
 
-            For i = 1 To anzahlBanden
-                loc(i) = New Liconcomp.VectorMovement
-                loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
-                loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
+                For i = 1 To anzahlBanden
+                    loc(i) = New Liconcomp.VectorMovement
+                    loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
+                    loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
 
-                For j = 1 To anzahlVideos
-                    ' myVideo(i, j) = New Liconcomp.VideoFile
-                    myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
-                    myVideo(i, j).Movement = loc(i)
-                    myVideo(i, j).zIndex = 110 + j
-                    myVideo(i, j).Visible = False
-                Next j
-            Next i
-            Timer1.Enabled = True
+                    For j = 1 To anzahlVideos
+                        ' myVideo(i, j) = New Liconcomp.VideoFile
+                        myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
+                        myVideo(i, j).Movement = loc(i)
+                        myVideo(i, j).zIndex = 110 + j
+                        myVideo(i, j).Visible = False
+                    Next j
+                Next i
+                Timer1.Enabled = True
 
-        Catch ex As Exception
-            MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
-        End Try
+            Catch ex As Exception
+                MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
+            End Try
+        End If
     End Sub
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
