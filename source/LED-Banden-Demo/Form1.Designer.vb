@@ -67,6 +67,9 @@ Partial Class Form1
         Me.CheckBoxB1 = New System.Windows.Forms.CheckBox
         Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker
         CType(Me.NumericUpDownLAvideoheight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAvideowidth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAoverlap, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -311,6 +314,7 @@ Partial Class Form1
         'GroupBox4
         '
         Me.GroupBox4.BackColor = System.Drawing.Color.Silver
+        Me.GroupBox4.Controls.Add(Me.ProgressBar1)
         Me.GroupBox4.Controls.Add(Me.Button6)
         Me.GroupBox4.Controls.Add(Me.GroupBox1)
         Me.GroupBox4.Controls.Add(Me.PictureBox1)
@@ -538,6 +542,13 @@ Partial Class Form1
         '
         Me.Timer1.Interval = 2000
         '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(13, 340)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(100, 23)
+        Me.ProgressBar1.TabIndex = 14
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -609,5 +620,8 @@ Partial Class Form1
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents ListBox2 As System.Windows.Forms.ListBox
     Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 
 End Class

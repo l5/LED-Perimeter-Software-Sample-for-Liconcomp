@@ -30,7 +30,13 @@
 
     Private controlLocation(5) As Boolean
 
+    ' Gibt an, ob die Videos schon einmal aus dem 
+    ' Verzeichnis eingelesen wurden. 
     Private videosGeladen As Boolean = False
+
+    ' Gibt das Verzeichnis an, in dem die zu ladenden Video- 
+    ' und Playlist-Dateien abgelegt sind.
+    Private videoPfad
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Bedienfenster unten rechts auf dem Bildschirm positionieren
@@ -38,12 +44,22 @@
         Me.Left = ra.Width - Me.Width
         Me.Top = ra.Height - Me.Height
 
+        ' Video-Pfad festlegen
+        videoPfad = Application.StartupPath
+
+        ' Verzeichnis "movies" auslesen
+        If videoPfad.EndsWith("\") And videoPfad.Length > 3 Then
+            videoPfad += "movie"
+        Else
+            videoPfad += "\movie"
+        End If
+
+        ' Player-Fenster starten/oeffnen
         Try
             initPlayer()
         Catch ex As Exception
             MsgBox("Der Player konnte nicht initialisiert werden. Sie koennen die Bedienoberflaeche ansehen, aber eine Darstellung von Videos / Texten ist nicht moeglich.")
         End Try
-
     End Sub
 
     Private Sub initPlayer()
@@ -79,15 +95,7 @@
     End Sub
 
     Private Sub loadPlaylists()
-        Dim myDir As String = Environment.CurrentDirectory
-
-        ' Verzeichnis "movies" auslesen
-        If myDir.EndsWith("\") And myDir.Length > 3 Then
-            myDir += "movie"
-        Else
-            myDir += "\movie"
-        End If
-        Dim oDir As New System.IO.DirectoryInfo(myDir)
+        Dim oDir As New System.IO.DirectoryInfo(videoPfad)
         Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
 
         ' Datei-Array durchlaufen und in 
@@ -101,7 +109,7 @@
                 If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "txt" Then
                     i += 1
                     ListBox2.Items.Add(oFile.Name.Substring(0, oFile.Name.Length - 3))
-                    myPlaylistFilenames(i) = New String(myDir + "\" + oFile.Name)
+                    myPlaylistFilenames(i) = New String(videoPfad + "\" + oFile.Name)
                 End If
             End If
         Next
@@ -129,17 +137,14 @@
 
     Private Sub loadVideos()
         If videosGeladen = False Then
+            Me.Cursor = Cursors.WaitCursor
+            FolderBrowserDialog1.SelectedPath = videoPfad
+            FolderBrowserDialog1.ShowDialog()
+            videoPfad = FolderBrowserDialog1.SelectedPath
+
             videosGeladen = True
             Try
-                Dim myDir As String = Environment.CurrentDirectory
-
-                ' Verzeichnis "movies" auslesen
-                If myDir.EndsWith("\") And myDir.Length > 3 Then
-                    myDir += "movie"
-                Else
-                    myDir += "\movie"
-                End If
-                Dim oDir As New System.IO.DirectoryInfo(myDir)
+                Dim oDir As New System.IO.DirectoryInfo(videoPfad)
                 Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
 
                 ' Datei-Array durchlaufen und in 
@@ -154,7 +159,7 @@
                         If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
                             i += 1
                             ListBox1.Items.Add(oFile.Name)
-                            myVideoFilenames(i) = New String(myDir + "\" + oFile.Name)
+                            myVideoFilenames(i) = New String(videoPfad + "\" + oFile.Name)
                         End If
                     End If
                 Next
@@ -166,6 +171,8 @@
                     vidHeight(i) = 72
                 Next
 
+                Dim progress As Integer = 0
+                Dim zaehler As Integer = 0
                 For i = 1 To anzahlBanden
                     loc(i) = New Liconcomp.VectorMovement
                     loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
@@ -173,6 +180,9 @@
 
                     For j = 1 To anzahlVideos
                         ' myVideo(i, j) = New Liconcomp.VideoFile
+                        zaehler += 1
+                        ProgressBar1.Value = zaehler / (anzahlVideos * anzahlBanden) * 100
+                        Me.Update()
                         myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
                         myVideo(i, j).Movement = loc(i)
                         myVideo(i, j).zIndex = 110 + j
@@ -184,6 +194,7 @@
             Catch ex As Exception
                 MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
             End Try
+            Me.Cursor = Cursors.Default
         End If
     End Sub
 
@@ -517,14 +528,6 @@
     End Sub
 
     Private Sub startPlaylist(ByVal playlistid)
-        Dim myDir As String = Environment.CurrentDirectory
-
-        ' Verzeichnis "movies" auslesen
-        If myDir.EndsWith("\") And myDir.Length > 3 Then
-            myDir += "movie"
-        Else
-            myDir += "\movie"
-        End If
         Dim sync As Liconcomp.Sync = New Liconcomp.Sync
 
         For i = 1 To anzahlBanden
@@ -532,7 +535,7 @@
                 If plVideos(i) IsNot Nothing Then
                     plVideos(i).Remove()
                 End If
-                plVideos(i) = pl.CreateVideoFromFile(myDir + "\" + myPlaylistContents(playlistid, 1))
+                plVideos(i) = pl.CreateVideoFromFile(videoPfad + "\" + myPlaylistContents(playlistid, 1))
                 plVideos(i).Movement = loc(i)
                 plVideos(i).zIndex = 60
                 plVideos(i).LoopCount = 1
@@ -593,16 +596,8 @@
         If newvideonumber > anzahlPlaylistElemente(vplActive(locnr)) Then
             newvideonumber = 1
         End If
-        Dim myDir As String = Environment.CurrentDirectory
 
-        ' Verzeichnis "movies" auslesen
-        If myDir.EndsWith("\") And myDir.Length > 3 Then
-            myDir += "movie"
-        Else
-            myDir += "\movie"
-        End If
-
-        Dim newfilename As String = myDir + "\" + myPlaylistContents(vplActive(locnr), newvideonumber)
+        Dim newfilename As String = videoPfad + "\" + myPlaylistContents(vplActive(locnr), newvideonumber)
         plVideos(locnr).Remove()
         plVideos(locnr) = pl.CreateVideoFromFile(newfilename)
         plVideos(locnr).Movement = loc(locnr)
