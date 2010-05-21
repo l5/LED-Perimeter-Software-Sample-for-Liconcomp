@@ -173,6 +173,18 @@ Namespace My
                 Me("Bande5Left") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property videoPfad() As String
+            Get
+                Return CType(Me("videoPfad"),String)
+            End Get
+            Set
+                Me("videoPfad") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

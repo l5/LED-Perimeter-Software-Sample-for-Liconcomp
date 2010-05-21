@@ -45,13 +45,15 @@
         Me.Top = ra.Height - Me.Height
 
         ' Video-Pfad festlegen
-        videoPfad = Application.StartupPath
-
-        ' Verzeichnis "movies" auslesen
-        If videoPfad.EndsWith("\") And videoPfad.Length > 3 Then
-            videoPfad += "movie"
+        If IO.Directory.Exists(My.Settings.videoPfad) Then
+            videoPfad = My.Settings.videoPfad
         Else
-            videoPfad += "\movie"
+            videoPfad = Application.StartupPath
+            If videoPfad.EndsWith("\") And videoPfad.Length > 3 Then
+                videoPfad += "movie"
+            Else
+                videoPfad += "\movie"
+            End If
         End If
 
         ' Player-Fenster starten/oeffnen
@@ -66,7 +68,6 @@
         Try
             ' Ausgabefeld oeffnen / Player initialisieren
             pl = New Liconcomp.Player()
-
             vidWidth(1) = 768
             vidWidth(2) = 768
             vidWidth(3) = 768
@@ -141,85 +142,90 @@
         ' Vorteil: Alle Videos liegen fuer den Sofortstart bereit.
         ' Nachteil: Das Laden dauert recht lange.
         If videosGeladen = False Then
-            ' Mauscursor in den Wartezustand versetzen
-            Me.Cursor = Cursors.WaitCursor
-
-            ' Fortschrittsanzeige anstelle des Startbuttons anzeigen
-            Button8.Visible = False
-            ProgressBar1.Visible = True
-
+            
             ' Der Video-Ordner darf vom User ausgewaehlt werden.
             FolderBrowserDialog1.SelectedPath = videoPfad
-            FolderBrowserDialog1.ShowDialog()
-            videoPfad = FolderBrowserDialog1.SelectedPath
+            Dim a As Integer = FolderBrowserDialog1.ShowDialog()
+            If a = 1 Then
+                ' gewaehlten Pfad auslesen und in den Application Settings speichern
+                videoPfad = FolderBrowserDialog1.SelectedPath
+                My.Settings.videoPfad = videoPfad
 
-            Try
+                ' Mauscursor in den Wartezustand versetzen
+                Me.Cursor = Cursors.WaitCursor
 
-                Dim oDir As New System.IO.DirectoryInfo(videoPfad)
-                Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
+                ' Fortschrittsanzeige anstelle des Startbuttons anzeigen
+                Button8.Visible = False
+                ProgressBar1.Visible = True
 
-                ' Datei-Array durchlaufen und in 
-                ' ListBox übertragen
-                Dim oFile As System.IO.FileInfo
-                ListBox1.Items.Clear()
-                Dim i As Integer = 0
 
-                For Each oFile In oFiles
-                    If (i < 100) Then
-                        If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
-                            i += 1
-                            ListBox1.Items.Add(oFile.Name)
-                            myVideoFilenames(i) = New String(videoPfad + "\" + oFile.Name)
+                Try
+
+                    Dim oDir As New System.IO.DirectoryInfo(videoPfad)
+                    Dim oFiles As System.IO.FileInfo() = oDir.GetFiles()
+
+                    ' Datei-Array durchlaufen und in 
+                    ' ListBox übertragen
+                    Dim oFile As System.IO.FileInfo
+                    ListBox1.Items.Clear()
+                    Dim i As Integer = 0
+
+                    For Each oFile In oFiles
+                        If (i < 100) Then
+                            If oFile.Name.Length > 5 And oFile.Name.Substring(oFile.Name.Length - 3).ToLower = "avi" Then
+                                i += 1
+                                ListBox1.Items.Add(oFile.Name)
+                                myVideoFilenames(i) = New String(videoPfad + "\" + oFile.Name)
+                            End If
                         End If
-                    End If
-                Next
-                anzahlVideos = i
-                ReDim Preserve myVideo(anzahlBanden, anzahlVideos)
+                    Next
+                    anzahlVideos = i
+                    ReDim Preserve myVideo(anzahlBanden, anzahlVideos)
 
 
-                For i = 1 To anzahlBanden
-                    vidHeight(i) = 72
-                Next
+                    For i = 1 To anzahlBanden
+                        vidHeight(i) = 72
+                    Next
 
-                ' Nachdem feststeht, um welche Videos es geht,
-                ' werden diese auf jede Bandenflaeche einzeln 
-                ' geladen. 
-                Dim progress As Integer = 0
-                Dim zaehler As Integer = 0
-                For i = 1 To anzahlBanden
-                    ' Positionieren der Anzeigeflaechen
-                    loc(i) = New Liconcomp.VectorMovement
-                    loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
-                    loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
+                    ' Nachdem feststeht, um welche Videos es geht,
+                    ' werden diese auf jede Bandenflaeche einzeln 
+                    ' geladen. 
+                    Dim progress As Integer = 0
+                    Dim zaehler As Integer = 0
+                    For i = 1 To anzahlBanden
+                        ' Positionieren der Anzeigeflaechen
+                        loc(i) = New Liconcomp.VectorMovement
+                        loc(i).SetX(My.Settings("Bande" + i.ToString + "Left"))
+                        loc(i).SetY(My.Settings("Bande" + i.ToString + "Top"))
 
-                    For j = 1 To anzahlVideos
-                        zaehler += 1
+                        For j = 1 To anzahlVideos
+                            zaehler += 1
 
-                        ' Das Laden dauert je nach Anzahl der Videos ziemlich lange.
-                        ' Deshalb Ladefortschritt anzeigen.
-                        ProgressBar1.Value = zaehler / (anzahlVideos * anzahlBanden) * 100
-                        Me.Update()
+                            ' Das Laden dauert je nach Anzahl der Videos ziemlich lange.
+                            ' Deshalb Ladefortschritt anzeigen.
+                            ProgressBar1.Value = zaehler / (anzahlVideos * anzahlBanden) * 100
+                            Me.Update()
 
-                        ' Videoobjekt erstellen
-                        myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
-                        myVideo(i, j).Movement = loc(i)
-                        myVideo(i, j).zIndex = 110 + j
-                        myVideo(i, j).Visible = False
-                    Next j
-                Next i
+                            ' Videoobjekt erstellen
+                            myVideo(i, j) = pl.CreateVideoFromFile(myVideoFilenames(j))
+                            myVideo(i, j).Movement = loc(i)
+                            myVideo(i, j).zIndex = 110 + j
+                            myVideo(i, j).Visible = False
+                        Next j
+                    Next i
 
-                ' Timer aktivieren, der fuer die Wiederholung von Texten
-                ' zustaendig ist
-                Timer1.Enabled = True
+                    ' Timer aktivieren, der fuer die Wiederholung von Texten
+                    ' zustaendig ist
+                    Timer1.Enabled = True
 
-                ' Verhindern, dass die Videos noch einmal
-                ' geladen werden
-                videosGeladen = True
+                    ' Verhindern, dass die Videos noch einmal
+                    ' geladen werden
+                    videosGeladen = True
 
-            Catch ex As Exception
-                MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
-            End Try
-
+                Catch ex As Exception
+                    MsgBox("Fehler beim Laden der Videos: " + ex.ToString)
+                End Try
+            End If
             ' Mauscursor wieder in den Normalzustand versetzen.
             Me.Cursor = Cursors.Default
         End If
