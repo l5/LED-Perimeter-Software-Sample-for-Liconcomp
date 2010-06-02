@@ -22,6 +22,8 @@
     Private vidLinebreak(5) As Long
     ' Overlap der Darstellungsflaechen (Pixel)
     Private vidOverlap(5) As Long
+    ' Offset der Darstellungsflaechen (Pixel)
+    Private vidOffset(5) As Long
 
     Private vpactive(5) As Integer
     Private vplActive(5) As Integer
@@ -48,6 +50,15 @@
     ' das Programm geaendert werden und deshalb keine 
     ' automatischen Aktionen ausgeloest werden sollen.
     Private autoChange As Boolean = False
+
+    Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        ' Alles beenden, was beendet werden kann
+        For i = 1 To anzahlBanden
+            For j = 1 To anzahlVideos
+                'myVideo(i, j).remove
+            Next j
+        Next i
+    End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ' Bedienfenster unten rechts auf dem Bildschirm positionieren
@@ -87,6 +98,7 @@
                 vidWidth(i) = My.Settings("Bande" + i.ToString + "Width")
                 vidLinebreak(i) = My.Settings("Bande" + i.ToString + "Linebreak")
                 vidOverlap(i) = My.Settings("Bande" + i.ToString + "Overlap")
+                vidOffset(i) = My.Settings("Bande" + i.ToString + "Offset")
 
                 ' Positionieren der Anzeigeflaechen
                 loc(i) = New Liconcomp.VectorMovement
@@ -399,6 +411,23 @@
         End Try
     End Sub
 
+    Private Sub changeVideoOffset(ByVal newpos As Long)
+        ' Aendert fuer alle Banden den Video-Overlap
+        Try
+            For i = 1 To anzahlBanden
+                If controlLocation(i) = True Then
+                    For j = 1 To anzahlVideos
+                        myVideo(i, j).OffsetX = newpos
+                        vidOffset(i) = newpos
+                        My.Settings("Bande" + i.ToString + "Offset") = newpos
+                    Next j
+                End If
+            Next i
+        Catch ex As Exception
+            MsgBox("Fehler beim Ändern des Offsets: " + ex.ToString)
+        End Try
+    End Sub
+
     Private Sub NumericUpDownLAXPos_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownLAXPos.ValueChanged
         If autoChange = False Then
             changeVideoXPos(NumericUpDownLAXPos.Value)
@@ -512,6 +541,7 @@
         Dim myYPos As Long
         Dim myOverl As Long
         Dim myLineb As Long
+        Dim myOffs As Long
 
         Dim gesteuerteBanden As Integer = 0
 
@@ -528,6 +558,7 @@
                     myYPos = loc(i).GetY
                     myLineb = vidLinebreak(i)
                     myOverl = vidOverlap(i)
+                    myOffs = vidOffset(i)
 
                     NumericUpDownLAvideoheight.Value = vidHeight(i)
                     NumericUpDownLAvideowidth.Value = vidWidth(i)
@@ -535,6 +566,7 @@
                     NumericUpDownLAYpos.Value = loc(i).GetY
                     NumericUpDownLAbreak.Value = vidLinebreak(i)
                     NumericUpDownLAoverlap.Value = vidOverlap(i)
+                    NumericUpDownOffset.Value = vidOffset(i)
 
                     NumericUpDownLAvideoheight.ForeColor = Color.Black
                     NumericUpDownLAvideowidth.ForeColor = Color.Black
@@ -542,6 +574,7 @@
                     NumericUpDownLAYpos.ForeColor = Color.Black
                     NumericUpDownLAbreak.ForeColor = Color.Black
                     NumericUpDownLAoverlap.ForeColor = Color.Black
+                    NumericUpDownOffset.ForeColor = Color.Black
                 End If
                 If vidHeight(i) <> myHoehe Then
                     NumericUpDownLAvideoheight.ForeColor = Color.Red
@@ -561,6 +594,9 @@
                 If vidOverlap(i) <> myOverl Then
                     NumericUpDownLAoverlap.ForeColor = Color.Red
                 End If
+                If vidOffset(i) <> myOffs Then
+                    NumericUpDownOffset.ForeColor = Color.Red
+                End If
             End If
         Next i
         If gesteuerteBanden = 0 Then
@@ -570,12 +606,14 @@
             NumericUpDownLAYpos.Value = 0
             NumericUpDownLAbreak.Value = 0
             NumericUpDownLAoverlap.Value = 0
+            NumericUpDownOffset.Value = 0
             NumericUpDownLAvideoheight.ForeColor = Color.Gray
             NumericUpDownLAvideowidth.ForeColor = Color.Gray
             NumericUpDownLAXPos.ForeColor = Color.Gray
             NumericUpDownLAYpos.ForeColor = Color.Gray
             NumericUpDownLAbreak.ForeColor = Color.Gray
             NumericUpDownLAoverlap.ForeColor = Color.Gray
+            NumericUpDownOffset.ForeColor = Color.Gray
         End If
         autoChange = False
     End Sub
@@ -782,5 +820,11 @@
 
     Private Sub ListBox2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox2.SelectedIndexChanged
         startPlaylist(ListBox2.SelectedIndex + 1)
+    End Sub
+
+    Private Sub NumericUpDownOffset_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDownOffset.ValueChanged
+        If autoChange = False Then
+            changeVideoOffset(NumericUpDownOffset.Value)
+        End If
     End Sub
 End Class

@@ -71,6 +71,8 @@ Partial Class Form1
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.NumericUpDownOffset = New System.Windows.Forms.NumericUpDown
+        Me.Label7 = New System.Windows.Forms.Label
         CType(Me.NumericUpDownLAvideoheight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAvideowidth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownLAoverlap, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,6 +86,7 @@ Partial Class Form1
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDownOffset, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'RadioButtonLAnlinks
@@ -185,14 +188,14 @@ Partial Class Form1
         Me.NumericUpDownLAvideoheight.Minimum = New Decimal(New Integer() {4000, 0, 0, -2147483648})
         Me.NumericUpDownLAvideoheight.Name = "NumericUpDownLAvideoheight"
         Me.NumericUpDownLAvideoheight.Size = New System.Drawing.Size(82, 20)
-        Me.NumericUpDownLAvideoheight.TabIndex = 24
+        Me.NumericUpDownLAvideoheight.TabIndex = 17
         Me.NumericUpDownLAvideoheight.ThousandsSeparator = True
         Me.NumericUpDownLAvideoheight.Value = New Decimal(New Integer() {72, 0, 0, 0})
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(10, 138)
+        Me.Label5.Location = New System.Drawing.Point(10, 143)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(34, 13)
         Me.Label5.TabIndex = 23
@@ -200,18 +203,18 @@ Partial Class Form1
         '
         'NumericUpDownLAvideowidth
         '
-        Me.NumericUpDownLAvideowidth.Location = New System.Drawing.Point(64, 136)
+        Me.NumericUpDownLAvideowidth.Location = New System.Drawing.Point(64, 141)
         Me.NumericUpDownLAvideowidth.Maximum = New Decimal(New Integer() {4000, 0, 0, 0})
         Me.NumericUpDownLAvideowidth.Minimum = New Decimal(New Integer() {4000, 0, 0, -2147483648})
         Me.NumericUpDownLAvideowidth.Name = "NumericUpDownLAvideowidth"
         Me.NumericUpDownLAvideowidth.Size = New System.Drawing.Size(82, 20)
-        Me.NumericUpDownLAvideowidth.TabIndex = 22
+        Me.NumericUpDownLAvideowidth.TabIndex = 16
         Me.NumericUpDownLAvideowidth.Value = New Decimal(New Integer() {704, 0, 0, 0})
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(10, 108)
+        Me.Label4.Location = New System.Drawing.Point(10, 94)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(44, 13)
         Me.Label4.TabIndex = 19
@@ -220,7 +223,7 @@ Partial Class Form1
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(10, 82)
+        Me.Label3.Location = New System.Drawing.Point(10, 73)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(54, 13)
         Me.Label3.TabIndex = 18
@@ -229,7 +232,7 @@ Partial Class Form1
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(10, 50)
+        Me.Label2.Location = New System.Drawing.Point(10, 45)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(32, 13)
         Me.Label2.TabIndex = 17
@@ -246,14 +249,14 @@ Partial Class Form1
         '
         'NumericUpDownLAoverlap
         '
-        Me.NumericUpDownLAoverlap.Location = New System.Drawing.Point(64, 106)
+        Me.NumericUpDownLAoverlap.Location = New System.Drawing.Point(64, 92)
         Me.NumericUpDownLAoverlap.Name = "NumericUpDownLAoverlap"
         Me.NumericUpDownLAoverlap.Size = New System.Drawing.Size(82, 20)
         Me.NumericUpDownLAoverlap.TabIndex = 14
         '
         'NumericUpDownLAbreak
         '
-        Me.NumericUpDownLAbreak.Location = New System.Drawing.Point(64, 80)
+        Me.NumericUpDownLAbreak.Location = New System.Drawing.Point(64, 71)
         Me.NumericUpDownLAbreak.Maximum = New Decimal(New Integer() {4000, 0, 0, 0})
         Me.NumericUpDownLAbreak.Name = "NumericUpDownLAbreak"
         Me.NumericUpDownLAbreak.Size = New System.Drawing.Size(82, 20)
@@ -261,7 +264,7 @@ Partial Class Form1
         '
         'NumericUpDownLAYpos
         '
-        Me.NumericUpDownLAYpos.Location = New System.Drawing.Point(64, 48)
+        Me.NumericUpDownLAYpos.Location = New System.Drawing.Point(64, 43)
         Me.NumericUpDownLAYpos.Maximum = New Decimal(New Integer() {4000, 0, 0, 0})
         Me.NumericUpDownLAYpos.Minimum = New Decimal(New Integer() {4000, 0, 0, -2147483648})
         Me.NumericUpDownLAYpos.Name = "NumericUpDownLAYpos"
@@ -430,6 +433,8 @@ Partial Class Form1
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.NumericUpDownOffset)
+        Me.GroupBox3.Controls.Add(Me.Label7)
         Me.GroupBox3.Controls.Add(Me.Label1)
         Me.GroupBox3.Controls.Add(Me.NumericUpDownLAXPos)
         Me.GroupBox3.Controls.Add(Me.NumericUpDownLAYpos)
@@ -552,6 +557,23 @@ Partial Class Form1
         '
         Me.Timer1.Interval = 2000
         '
+        'NumericUpDownOffset
+        '
+        Me.NumericUpDownOffset.Location = New System.Drawing.Point(64, 113)
+        Me.NumericUpDownOffset.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
+        Me.NumericUpDownOffset.Name = "NumericUpDownOffset"
+        Me.NumericUpDownOffset.Size = New System.Drawing.Size(82, 20)
+        Me.NumericUpDownOffset.TabIndex = 15
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(10, 115)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(35, 13)
+        Me.Label7.TabIndex = 27
+        Me.Label7.Text = "Offset"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -576,6 +598,7 @@ Partial Class Form1
         Me.GroupBox3.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDownOffset, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -627,5 +650,7 @@ Partial Class Form1
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents NumericUpDownOffset As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 
 End Class

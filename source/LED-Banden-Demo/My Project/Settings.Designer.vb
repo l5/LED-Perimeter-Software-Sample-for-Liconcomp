@@ -425,6 +425,66 @@ Namespace My
                 Me("Bande5Overlap") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande1Offset() As Long
+            Get
+                Return CType(Me("Bande1Offset"),Long)
+            End Get
+            Set
+                Me("Bande1Offset") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande2Offset() As Long
+            Get
+                Return CType(Me("Bande2Offset"),Long)
+            End Get
+            Set
+                Me("Bande2Offset") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande3Offset() As Long
+            Get
+                Return CType(Me("Bande3Offset"),Long)
+            End Get
+            Set
+                Me("Bande3Offset") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande4Offset() As Long
+            Get
+                Return CType(Me("Bande4Offset"),Long)
+            End Get
+            Set
+                Me("Bande4Offset") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Bande5Offset() As Long
+            Get
+                Return CType(Me("Bande5Offset"),Long)
+            End Get
+            Set
+                Me("Bande5Offset") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
